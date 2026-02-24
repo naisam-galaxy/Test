@@ -3,6 +3,7 @@
 A browser-based local tool to track Amazon PPC campaigns, keyword sheets, reminders, and optimization history.
 
 ## Features
+- ClickUp/Asana-inspired board layout with a retro-computer visual style.
 - Campaign fields: campaign name, created date, ad type, match type, category, model ASIN list, budget, placements.
 - Keyword Tab opens an Excel-style popup (one keyword per line).
 - Auto optimization reminder based on creation date + reminder days.

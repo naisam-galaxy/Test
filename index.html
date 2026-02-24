@@ -3,72 +3,104 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Amazon PPC Campaign Tracker</title>
+  <title>Amazon PPC Command Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header>
-    <h1>Amazon PPC Campaign Tracker</h1>
-    <p>Track campaigns, keyword sheets, reminders, and optimization history locally.</p>
-  </header>
-
-  <main>
-    <section class="card">
-      <h2>Add Campaign</h2>
-      <form id="campaign-form">
-        <div class="grid">
-          <label>Campaign Name
-            <input type="text" id="campaignName" required />
-          </label>
-          <label>Created Date
-            <input type="date" id="createdDate" required />
-          </label>
-          <label>Ad Type
-            <input type="text" id="adType" placeholder="Sponsored Products" required />
-          </label>
-          <label>Match Type
-            <input type="text" id="matchType" placeholder="Broad / Phrase / Exact" required />
-          </label>
-          <label>Category
-            <input type="text" id="category" required />
-          </label>
-          <label>Budget
-            <input type="number" id="budget" min="0" step="0.01" required />
-          </label>
-          <label>Placements
-            <input type="text" id="placements" placeholder="Top of Search, Product Pages" required />
-          </label>
-          <label class="full">Model ASIN List (comma separated)
-            <textarea id="asinList" rows="2" placeholder="B08XXXXXX, B09YYYYYY" required></textarea>
-          </label>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-led"></div>
+        <div>
+          <h1>PPC Console</h1>
+          <p>Retro Campaign Ops</p>
         </div>
-
-        <div class="actions">
-          <label>Optimization Reminder (days from creation)
-            <input type="number" id="reminderDays" min="1" value="7" required />
-          </label>
-          <button type="submit">Save Campaign</button>
-        </div>
-      </form>
-    </section>
-
-    <section class="card">
-      <div class="section-header">
-        <h2>Campaigns</h2>
-        <button id="clear-data" class="danger">Clear All Data</button>
       </div>
-      <div id="campaign-list"></div>
-    </section>
-  </main>
+
+      <nav class="menu">
+        <button class="menu-item active">Campaigns</button>
+        <button class="menu-item">Keyword Sheets</button>
+        <button class="menu-item">Optimization Log</button>
+      </nav>
+
+      <div class="sidebar-note">
+        <p>Tip: Keep reminders short (3-7 days) for new campaigns.</p>
+      </div>
+    </aside>
+
+    <main class="workspace">
+      <header class="topbar">
+        <div>
+          <h2>Amazon PPC Campaign Tracker</h2>
+          <p>Track campaign setup, keywords, reminders, and optimization history.</p>
+        </div>
+        <button id="clear-data" class="danger">Clear All Data</button>
+      </header>
+
+      <section class="panel add-panel">
+        <div class="panel-head">
+          <h3>Create / Edit Campaign</h3>
+          <span class="chip">Local Browser App</span>
+        </div>
+
+        <form id="campaign-form">
+          <div class="grid">
+            <label>Campaign Name
+              <input type="text" id="campaignName" required />
+            </label>
+            <label>Created Date
+              <input type="date" id="createdDate" required />
+            </label>
+            <label>Ad Type
+              <input type="text" id="adType" placeholder="Sponsored Products" required />
+            </label>
+            <label>Match Type
+              <input type="text" id="matchType" placeholder="Broad / Phrase / Exact" required />
+            </label>
+            <label>Category
+              <input type="text" id="category" required />
+            </label>
+            <label>Budget
+              <input type="number" id="budget" min="0" step="0.01" required />
+            </label>
+            <label>Placements
+              <input type="text" id="placements" placeholder="Top of Search, Product Pages" required />
+            </label>
+            <label>Reminder Days
+              <input type="number" id="reminderDays" min="1" value="7" required />
+            </label>
+            <label class="full">Model ASIN List (comma separated)
+              <textarea id="asinList" rows="2" placeholder="B08XXXXXX, B09YYYYYY" required></textarea>
+            </label>
+          </div>
+
+          <div class="actions">
+            <button type="submit">Save Campaign</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h3>Campaign Board</h3>
+          <span id="campaign-count" class="chip">0 campaigns</span>
+        </div>
+        <div id="campaign-list" class="campaign-list"></div>
+      </section>
+    </main>
+  </div>
 
   <dialog id="keyword-dialog">
     <form method="dialog" class="dialog-content" id="keyword-form">
-      <div class="section-header">
-        <h3>Keyword Sheet</h3>
-        <button type="submit" class="link">Close</button>
+      <div class="panel-head">
+        <h3>Keyword Sheet (Excel Style)</h3>
+        <button type="submit" class="ghost">Close</button>
       </div>
-      <p class="hint">Enter one keyword per line (Excel style).</p>
-      <textarea id="keyword-text" rows="14" placeholder="keyword one&#10;keyword two"></textarea>
+      <p class="hint">Enter one keyword per line.</p>
+      <textarea id="keyword-text" rows="14" placeholder="wireless headphones&#10;bluetooth earphones"></textarea>
       <menu>
         <button id="save-keywords" value="default">Save Keywords</button>
       </menu>
@@ -77,13 +109,17 @@
 
   <template id="campaign-template">
     <article class="campaign-item">
-      <div class="section-header">
-        <h3 class="campaign-title"></h3>
+      <div class="campaign-row">
+        <div>
+          <h4 class="campaign-title"></h4>
+          <p class="campaign-subtitle"></p>
+        </div>
         <div class="item-actions">
-          <button class="secondary keyword-btn">Keyword Tab</button>
-          <button class="secondary edit-btn">Edit</button>
+          <button class="ghost keyword-btn">Keyword Tab</button>
+          <button class="ghost edit-btn">Edit</button>
         </div>
       </div>
+
       <div class="meta"></div>
       <div class="reminder"></div>
 
@@ -94,7 +130,7 @@
           <label>Add optimization date
             <input type="date" class="optimization-date" />
           </label>
-          <button class="secondary add-history">Add Date</button>
+          <button class="ghost add-history" type="button">Add Date</button>
         </div>
       </details>
     </article>

@@ -9,6 +9,7 @@ const keywordDialog = document.getElementById('keyword-dialog');
 const keywordText = document.getElementById('keyword-text');
 const saveKeywordsBtn = document.getElementById('save-keywords');
 const template = document.getElementById('campaign-template');
+const campaignCount = document.getElementById('campaign-count');
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -74,6 +75,7 @@ function getFormData() {
 
 function renderCampaigns() {
   campaignList.innerHTML = '';
+  campaignCount.textContent = `${campaigns.length} campaign${campaigns.length === 1 ? '' : 's'}`;
   if (campaigns.length === 0) {
     campaignList.innerHTML = '<p>No campaigns added yet.</p>';
     return;
@@ -84,6 +86,7 @@ function renderCampaigns() {
     const root = clone.querySelector('.campaign-item');
 
     clone.querySelector('.campaign-title').textContent = campaign.campaignName;
+    clone.querySelector('.campaign-subtitle').textContent = `${campaign.adType} • ${campaign.matchType} • ${campaign.category}`;
     clone.querySelector('.meta').innerHTML = `
       <div><strong>Created:</strong> ${campaign.createdDate}</div>
       <div><strong>Ad Type:</strong> ${campaign.adType}</div>
