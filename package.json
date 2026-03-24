@@ -1,0 +1,16 @@
+{
+  "name": "amazon-india-sales-dashboard-starter",
+  "version": "1.0.0",
+  "description": "Starter API to fetch basic Amazon Seller Central India sales for a custom dashboard.",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "check": "node --check app.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  }
+}
